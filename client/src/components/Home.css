@@ -1,0 +1,23 @@
+.container_1{
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 70vh; /* Adjust the height as needed */
+    overflow: hidden;
+    background-color: #cae0fa; /* Your desired background color */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  .text_1{
+    font-family: CrimsonText;
+    font-size: x-large;
+    /* color:#1bfdcc */
+  }
+  .student_img{
+    overflow: hidden;
+    margin-top: 5vh;
+  }
+  
