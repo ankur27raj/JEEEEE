@@ -93,7 +93,7 @@ const MainPage = () => {
   const { darkMode } = useContext(ModeContext);
 
   const fetchData=async()=>{
-    const response = await axios.get("http://localhost:8000/api/v1/getContest");
+    const response = await axios.get("https://je-2-backend.onrender.com/api/v1/getContest");
     setContests(response.data.data);
     sendDate({tm:response.data.data[0].startTime,i:response.data.data[0]._id,dur:response.data.data[0].duration});
   }
