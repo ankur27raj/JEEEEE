@@ -80,7 +80,7 @@ useEffect(() => {
 
   const fetchRes = async (id) => {
     try {
-      const res = await axios.get(`http://localhost:8000/api/v1/getProblem/${id}`);
+      const res = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblem/${id}`);
       return res.data.data;
     } catch (error) {
       console.error('Error fetching question:', error);
