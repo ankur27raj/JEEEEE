@@ -92,7 +92,7 @@ const Table = () => {
 
   const fetchData = async (tags) => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/v1/getProblem?page_no=${currentPage}&probPerPage=${probPerPage}&tags=${tags}`);
+      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblem?page_no=${currentPage}&probPerPage=${probPerPage}&tags=${tags}`);
       // setData(response.data.data);
       setFilteredData(response.data.data);
       setTotalProb(response.data.length);
@@ -118,7 +118,7 @@ const Table = () => {
   const handleTextSearch = async (e) => {
     try {
       // console.log(text);
-      const response = await axios.get(`http://localhost:8000/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
+      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
       // setData(response.data.data);
       setFilteredData(response.data.data);
       setTotalProb(response.data.length);
