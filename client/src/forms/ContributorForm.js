@@ -46,7 +46,7 @@ const ContributorForm = () => {
         e.preventDefault();
         console.log(formData.option);
         console.log(formData);
-        const response = await axios.post("http://localhost:8000/api/v1/createProblem", formData);
+        const response = await axios.post("https://je-2-backend.onrender.com/api/v1/createProblem", formData);
         setFormmdata(prevFormData => ({...prevFormData, questions: [...prevFormData.questions, [response.data.data._id,response.data.data.statement]]
           }));
           
