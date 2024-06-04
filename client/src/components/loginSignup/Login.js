@@ -39,7 +39,7 @@ const Login = () => {
             let response;
             if (signup) {
                 response = await axios.post(
-                    "http://localhost:8000/api/v1/signup",
+                    "https://je-2-backend.onrender.com/api/v1/signup",
                     signupData,
                     {
                         headers: {
@@ -49,7 +49,7 @@ const Login = () => {
                 );
             } else {
                 response = await axios.post(
-                    "http://localhost:8000/api/v1/login",
+                    "https://je-2-backend.onrender.com/api/v1/login",
                     loginData,
                     {
                         headers: {
