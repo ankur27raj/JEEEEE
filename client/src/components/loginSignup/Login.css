@@ -1,0 +1,136 @@
+/* Container styling */
+.cont {
+    margin: 0;
+    background: linear-gradient(90deg, rgb(0, 0, 0) 0%, rgba(29, 197, 253, 0.695) 50%, rgb(0, 0,0) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: CrimsonText;
+}
+.container {
+    display: flex; /* Use flexbox for row-wise layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    padding: 0.5rem; /* Add padding */
+     /* Shadow at the bottom */
+     border: 0.08rem solid #ccc;
+    border-radius: 0.6rem; /* Rounded corners */
+    margin: 0.6rem auto; /* Center the container */
+    width: 50%; /* Width of the container */
+    height: 60vh;
+    /* max-width: 90%; Max width for the container */
+    background: local;
+    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.573);
+    transition: box-shadow 0.4s, transform 0.4s;
+     /* Black border */
+}
+
+
+/* Form styling */
+.form-container {
+    flex: 1; /* Allow form to take up available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-section div {
+    margin-bottom: 1rem; /* Space out form fields */
+}
+
+.form-section input {
+    width: 90%; /* Full width inputs */
+    padding: 0.5rem; /* Padding for inputs */
+    margin-bottom: 0.6rem; /* Space out inputs */
+    border: none; /* Remove all borders */
+    border-bottom: 0.1rem solid black; /* Add a black underline */
+    /* background-color: rgb(135, 193, 222); Set the background color */
+    outline: none; /* Remove focus outline */
+    font-size: 1rem; /* Font size of input fields */
+    background: local;
+    color: rgb(255, 255, 255);
+}
+
+/* Styling for the placeholder text in input fields */
+.form-section input::placeholder {
+    font-weight: bold; /* Make placeholder text bold */
+    color: rgb(255, 255, 255);
+}
+
+/* Styling for the outer span tag */
+.form-section span {
+    font-size: small; /* Set the font size to small */
+    color: azure;
+}
+
+/* Styling for the inner span tag on hover */
+.form-section span span{
+    text-decoration: underline;
+}
+.form-section span span:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+
+/* Styling the row for first and last name input fields */
+.name-row {
+    display: flex; /* Use flexbox to layout the inputs side by side */
+    justify-content: space-around; /* Space inputs evenly */
+    margin-bottom: 1rem; /* Add space at the bottom */
+
+}
+
+.name-row input {
+    width: 40%; /* Each input takes up 48% of the row's width */
+    margin: 0.5rem; /* Space out inputs */
+    border: none; /* Remove borders */
+    border-bottom: 0.1rem solid black; /* Add black underline */
+   
+    outline: none; /* Remove focus outline */
+    font-size: 1rem; /* Set font size */
+}
+
+
+
+.form-section button {
+    padding: 10px 20px; /* Padding for button */
+    border-radius: 4px; /* Rounded corners */
+    border: none; /* No border */
+    background-color: #2194cdbf; /* Button background color */
+    color: azure; /* Button text color */
+    cursor: pointer; /* Cursor changes to pointer */
+    box-shadow: 0 0.2rem 0.2rem rgba(169, 205, 243, 0.99);
+    
+}
+
+.form-section button:hover {
+    background-color: #1a719dbf; /* Darker blue on hover */
+}
+
+/* Image container styling */
+.image-container {
+    flex: 1; /* Allow image to take up available space */
+    display: flex; /* Flexbox for centering image */
+    justify-content: center; /* Center image horizontally */
+    align-items: center; /* Center image vertically */
+    position: relative; /* To allow positioning of the pseudo-element */
+}
+
+.image-container img {
+    max-width: 100%; /* Make image responsive */
+    border-radius: 8px; /* Rounded corners for the image */
+}
+
+/* Pseudo-element for wavy effect at the bottom of the image */
+.image-container::after {
+    content: ''; /* No content, just a shape */
+    position: absolute; /* Absolute positioning relative to the image container */
+    bottom: 0; /* Place at the bottom */
+    left: 0; /* Starting from the left */
+    width: 100%; /* Full width */
+    height: 40px; /* Height of the wave */
+     /* Path to the SVG file */
+    background-size: cover; /* Cover the area */
+}

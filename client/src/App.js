@@ -1,0 +1,79 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './App.css';
+import MainPage from './components/compete/MainPage';
+import Home from "./components/Home";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ContributorForm from './forms/ContributorForm';
+import Login from './components/loginSignup/Login'
+import UserContextProvider from "./contexts/UserContextProvider";
+import Table from "./components/PracticePage";
+import CompeteContextProvider from "./components/compete/CompeteContext";
+import ContestForm from "./components/compete/ContestForm";
+import QuestionPage from "./components/compete/QuestionPage";
+import Question from "./components/practice_sec/Question";
+import {useContext} from 'react'
+import {ModeContext} from './contexts/ModeContext';
+import FeedbackPage from "./components/FeedBack";
+import PaymentSuccess from "./PaymentSuccess";
+
+function App() {
+  const { darkMode } = useContext(ModeContext);
+  return (
+    <div className={`${darkMode ? 'App' : 'changed-App'}`}>
+      <UserContextProvider>
+      <CompeteContextProvider>
+      <BrowserRouter>
+        <Navbar></Navbar>
+          <Routes>
+              <Route
+                  path="/"
+                  Component={Home}
+                  ></Route>
+              <Route
+                  path="/login"
+                  Component={Login}
+                  ></Route>
+              <Route
+                  path="/addProblem"
+                  Component={ContributorForm}
+                  ></Route>
+              <Route
+                  path="/practice"
+                  Component={Table}
+                  ></Route>
+              <Route
+                  path="/contest-form"
+                  Component={ContestForm}
+                  ></Route>
+              <Route
+                  path="/compete"
+                  Component={MainPage}
+                  ></Route>
+              <Route
+                  path="/contest/:cid/"
+                  Component={QuestionPage}
+                  ></Route>
+              <Route 
+                path="/problem/:statement/"
+                Component={Question}>
+              </Route>
+              <Route 
+                path="/feedback"
+                Component={FeedbackPage}>
+              </Route>
+              <Route
+                path="/paymentsuccess"
+                Component={PaymentSuccess}>
+              </Route>
+          </Routes>
+          
+        <Footer></Footer>
+      </BrowserRouter>
+      </CompeteContextProvider>
+      </UserContextProvider>
+    </div>
+  );
+}
+
+export default App;
