@@ -66,8 +66,8 @@ const Subscriber = () => {
     const { darkMode } = useContext(ModeContext);
 
     const checkoutHandler = async (amount) => {
-        const { data: { key } } = await axios.get("http://www.localhost:8000/api/v1/getkey");
-        const { data: { order } } = await axios.post("http://localhost:8000/api/v1/checkout", { amount });
+        const { data: { key } } = await axios.get("https://je-2-backend.onrender.com/api/v1/getkey");
+        const { data: { order } } = await axios.post("https://je-2-backend.onrender.com/api/v1/checkout", { amount });
         const options = {
             key,
             amount: order.amount,
@@ -76,7 +76,7 @@ const Subscriber = () => {
             description: "Razorpay Integration",
             image: "https://lh3.googleusercontent.com/-F0G6IrwKVQ0/AAAAAAAAAAI/AAAAAAAAAAA/ALKGfkm6s0ROcIP5Rz6jpsv2I4NnRA6WiA/photo.jpg?sz=46",
             order_id: order.id,
-            callback_url: "http://localhost:8000/api/v1/paymentverification",
+            callback_url: "https://je-2-backend.onrender.com/api/v1/paymentverification",
             prefill: {
                 name: "Ankur Kumar",
                 email: "ankur.kumar@example.com",
