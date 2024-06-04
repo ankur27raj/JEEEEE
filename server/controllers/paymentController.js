@@ -45,7 +45,7 @@ exports.paymentVerification = async (req, res) => {
   //   });
 
     res.redirect(
-      `https://je-2-frontend.onrender.com/paymentsuccess`
+      `https://je-2-frontend.onrender.com`
     );
   // } else {
   //   res.status(400).json({
