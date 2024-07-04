@@ -36,7 +36,7 @@ const Question = () => {
 
   const checkMarked = async () =>{
     try{
-      const response = await axios.get(`http://localhost:8000/api/v1/getMarkedProblem?userId=${userData._id}&problemId=${item._id}`);
+      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getMarkedProblem?userId=${userData._id}&problemId=${item._id}`);
       setMark(response.data.data);
     }catch(err){
       console.error(err);
@@ -78,7 +78,7 @@ const Question = () => {
 
   const solvedQuestion = async () =>{
     try{
-      const response = await axios.put(`http://localhost:8000/api/v1/storeSolvedQuestion`,{userId: userData._id, problemId:item._id});
+      const response = await axios.put(`https://je-2-backend.onrender.com/api/v1/storeSolvedQuestion`,{userId: userData._id, problemId:item._id});
       console.log("response",response.data);
     }catch(err){
       console.error(err.message);
@@ -140,7 +140,7 @@ const Question = () => {
   const markQuestion = async () => {
     try {
         console.log("userdata",userData._id);
-        const res = await axios.put(`http://localhost:8000/api/v1/markProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
+        const res = await axios.put(`https://je-2-backend.onrender.com/api/v1/markProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
         console.log('Response:', res.data);
         setMark(res.data.data);
     } catch (err) {
@@ -150,7 +150,7 @@ const Question = () => {
 
   const unmarkQeustion = async () => {
     try {
-        const res = await axios.put(`http://localhost:8000/api/v1/unmarkProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
+        const res = await axios.put(`https://je-2-backend.onrender.com/api/v1/unmarkProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
         console.log('Response:', res.data);
         setMark(res.data.data);
     } catch (err) {
