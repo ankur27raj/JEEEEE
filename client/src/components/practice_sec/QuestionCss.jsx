@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 
-   const QuestionHeader = styled.div`
+const HeaderContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const QuestionHeader = styled.div`
   width: 85%;
   display: flex;
   flex-direction: column;
@@ -26,6 +33,26 @@ const QuestionQuestion = styled.p`
   display: block;
   align-items: flex-start;
 `;
+
+
+const MarkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const MarkImage = styled.img`
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+`;
+
+const MarkTag = styled.span`
+  margin-left: 5px;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
 
 const OptionLabel = styled.label`
   width: 30%;
@@ -63,7 +90,7 @@ const Button = styled.button`
   margin-left: 7rem;
   display: block;
   align-items: flex-start;
-  
+
   &:hover {
     background-color: #1b5e20;
   }
@@ -97,38 +124,45 @@ const AnswerBox = styled.div`
 `;
 
 const Success = styled.div`
-  display:flex;
-  flex-direction:column;
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
   margin: 1.5rem;
   margin-left: 7rem;
-  font-weight:bold;
+  font-weight: bold;
   font-size: large;
   color: green;
 `;
 
 const Fail = styled.div`
-display:flex;
-flex-direction:column;
-align-items: flex-start;
-margin: 1.5rem;
-margin-left: 7rem;
-font-weight:bold;
-font-size: large;
-color:red;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 1.5rem;
+  margin-left: 7rem;
+  font-weight: bold;
+  font-size: large;
+  color: red;
 `;
 
+
+
 export {
-    QuestionHeader,
-    QuestionTypeMessage,
-    QuestionStatement,
-    QuestionQuestion,
-    OptionLabel,
-    TextArea,
-    Button,
-    CorrectAnswer,
-    AnsPara,
-    AnswerBox,
-    Success,
-    Fail
+  HeaderContainer,
+  QuestionHeader,
+  QuestionTypeMessage,
+  QuestionStatement,
+  QuestionQuestion,
+  OptionLabel,
+  TextArea,
+  Button,
+  CorrectAnswer,
+  AnsPara,
+  AnswerBox,
+  Success,
+  Fail,
+  MarkContainer,
+  MarkImage,
+  MarkTag
 };
+

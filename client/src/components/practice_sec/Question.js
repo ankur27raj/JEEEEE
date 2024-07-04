@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useLocation} from 'react-router-dom';
+import Cookies from 'js-cookie';
 import {
+  HeaderContainer,
   QuestionHeader,
   QuestionTypeMessage,
   QuestionStatement,
@@ -12,8 +14,12 @@ import {
   AnsPara,
   AnswerBox,
   Success,
-  Fail
+  Fail,
+  MarkContainer,
+  MarkImage,
+  MarkTag
 } from './QuestionCss';
+import axios from 'axios';
 
 const Question = () => {
   const location = useLocation();
@@ -25,12 +31,30 @@ const Question = () => {
   const [correctAnswer, setCorrectAnswer] = useState([]);
   const [submitFlg, setSubmitFlg] = useState(false);
   const [successFlg, setSuccessFlg] = useState(false);
+  const [marked, setMark] = useState(false);
+  const [userData, setUserData] = useState({});
+
+  const checkMarked = async () =>{
+    try{
+      const response = await axios.get(`http://localhost:8000/api/v1/getMarkedProblem?userId=${userData._id}&problemId=${item._id}`);
+      setMark(response.data.data);
+    }catch(err){
+      console.error(err);
+    }
+  }
+  checkMarked();
 
   useEffect(() => {
+    // console.log(userData);
+    const storedData = JSON.parse(Cookies.get('userData'));
+    setUserData(storedData);
     if (item.kind === "A") setQuestionTypeMessage("Choose the correct option");
     if (item.kind === "B") setQuestionTypeMessage("Choose the correct option(s)");
     if (item.kind === "C") setQuestionTypeMessage("Fill the correct answer");
-  }, []);
+  },[]);
+
+  
+  
 
   const handleOptionChange = (e, questionId) => {
     const { type, value, checked } = e.target;
@@ -50,6 +74,17 @@ const Question = () => {
       return updatedOptions;
     });
   };
+
+
+  const solvedQuestion = async () =>{
+    try{
+      const response = await axios.put(`http://localhost:8000/api/v1/storeSolvedQuestion`,{userId: userData._id, problemId:item._id});
+      console.log("response",response.data);
+    }catch(err){
+      console.error(err.message);
+    }
+  }
+
 
   const handleSubmit = () => {
     let str = "";
@@ -72,6 +107,8 @@ const Question = () => {
       const ans = item.answer.toLowerCase();
       if (str === ans) {
         setSuccessFlg(true);
+        // to store the problem in the db 
+        solvedQuestion();
       } else {
         setSuccessFlg(false);
       }
@@ -100,13 +137,53 @@ const Question = () => {
     setAnswerFlg(!answerFlg);
   };
 
+  const markQuestion = async () => {
+    try {
+        console.log("userdata",userData._id);
+        const res = await axios.put(`http://localhost:8000/api/v1/markProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
+        console.log('Response:', res.data);
+        setMark(res.data.data);
+    } catch (err) {
+        console.error('Error marking question:', err.response ? err.response.data : err.message);
+    }
+  }
+
+  const unmarkQeustion = async () => {
+    try {
+        const res = await axios.put(`http://localhost:8000/api/v1/unmarkProblem`, { problemId: `${item._id}`, userId:`${userData._id}`});
+        console.log('Response:', res.data);
+        setMark(res.data.data);
+    } catch (err) {
+        console.error('Error unmarking question:', err.response ? err.response.data : err.message);
+    }
+  }
+
+
+  const handleMarking = () =>{
+    if(!marked) markQuestion();
+    else unmarkQeustion();
+  };
+  
+
   return (
     <div>
       <QuestionHeader>
-        <QuestionTypeMessage>{questionTypeMessage}</QuestionTypeMessage>
+        <HeaderContainer>
+          <QuestionTypeMessage>{questionTypeMessage}</QuestionTypeMessage>
+          <MarkContainer onClick={handleMarking}>
+            <MarkImage
+              src={require("../../assets/star_" + (marked ? "10171017" : "10234085") + ".png")}
+              alt=""
+            />
+            <MarkTag>{marked ? ("Unmark") : ("Mark")}</MarkTag>
+            {/* {marked ? (<MarkTag>Unmark</MarkTag>) : (<MarkTag>Mark</MarkTag>)} */}
+          </MarkContainer>
+        </HeaderContainer>
         <QuestionStatement>{question.statement}</QuestionStatement>
         <QuestionQuestion>{question.question}</QuestionQuestion>
       </QuestionHeader>
+      
+      
       <div>
         {question.kind === "A" && (
           <div>
@@ -180,6 +257,7 @@ const Question = () => {
           )}
         </CorrectAnswer>
       )}
+
     </div>
   );
 };
