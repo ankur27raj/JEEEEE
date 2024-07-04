@@ -28,7 +28,7 @@ const ProblemList = () => {
     const fetchData = async() =>{
         try{
             const storedData = JSON.parse(Cookies.get('userData'));
-            const response = await axios.get(`http://localhost:8000/api/v1/${text}?userId=${storedData._id}&currentPage=${currentPage}&probPerPage=${probPerPage}`);
+            const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/${text}?userId=${storedData._id}&currentPage=${currentPage}&probPerPage=${probPerPage}`);
             setData(response.data.data);
             setTotalProb(response.data.length);
         }catch(error){
@@ -37,10 +37,10 @@ const ProblemList = () => {
     }
     
     useEffect(()=>{
-        if(currentUrl === "http://localhost:3000/myList"){
+        if(currentUrl === "https://je-2-frontend.onrender.com/myList"){
             text = "getList";
         }
-        else if(currentUrl === "http://localhost:3000/submissions"){
+        else if(currentUrl === "https://je-2-frontend.onrender.com/submissions"){
             text = "getSubmissions";
         }
         const storedData = JSON.parse(Cookies.get('userData'));
@@ -68,7 +68,7 @@ const ProblemList = () => {
     const resolveStatus = async () => {
         try {
             const storedData = JSON.parse(Cookies.get('userData'));
-          const res = await axios.get(`http://localhost:8000/api/v1/getSolvedProblem?userId=${storedData._id}`);
+          const res = await axios.get(`https://je-2-backend.onrender.com/api/v1/getSolvedProblem?userId=${storedData._id}`);
           setArr(res.data.data);
         } catch (error) {
           console.error(error);
