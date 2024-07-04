@@ -5,8 +5,8 @@ import makeAnimated from 'react-select/animated';
 import axios from "axios";
 import './PracticePage.css';
 import {useLocation, useNavigate } from 'react-router-dom';
-import UserContext from '../contexts/UserContext';
 import {ModeContext} from '../contexts/ModeContext';
+import Cookies from 'js-cookie';
 
 const animatedComponents = makeAnimated();
 
@@ -15,46 +15,44 @@ const Table = () => {
   useEffect(() => {
     document.body.className = !darkMode ? 'light-mode' : 'dark-mode';
   }, [darkMode]);
+  const [userData, setUserData] = useState({});
+  const [isAuthenticate, setIsAuthenticate] = useState(false);
   const location = useLocation();
-  const [selectedLevel, setSlectedLevel] = useState(null);
-  const [selectedSubject, setSlectedSubject] = useState(null);
-  const [selectedTopic, setSlectedTopic] = useState([]);
+  const [selectedLevel, setSelectedLevel] = useState(null);
+  const [selectedSubject, setSelectedSubject] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  // const [data, setData] = useState([]);
-  const [all_tags, set_tags] = useState("");
+  const [all_tags, setTags] = useState("");
   const [probPerPage, setProbPerPage] = useState(2);
   const [text, setText] = useState("");
   const [totalProb, setTotalProb] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [textSearch, setTextSearch] = useState("");
-
-  const {isAuthenticate} = useContext(UserContext);
+  const [arr, setArr] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let tags_string = "";
-    const topic_len = selectedTopic.length;
+    let tagsString = "";
+    const topicLen = selectedTopic.length;
     if (selectedLevel != null) {
-      tags_string += selectedLevel.value;
-      if (selectedSubject != null || topic_len > 0) tags_string += ',';
+      tagsString += selectedLevel.value;
+      if (selectedSubject != null || topicLen > 0) tagsString += ',';
     }
-
     if (selectedSubject != null) {
-      tags_string += selectedSubject.value;
-      if (topic_len > 0) tags_string += ',';
+      tagsString += selectedSubject.value;
+      if (topicLen > 0) tagsString += ',';
     }
-
     selectedTopic.forEach((topic, index) => {
-      tags_string += topic.value;
-      if (index !== topic_len - 1) tags_string += ',';
+      tagsString += topic.value;
+      if (index !== topicLen - 1) tagsString += ',';
     });
-    set_tags(tags_string);
+    setTags(tagsString);
     setCurrentPage(1);
     setText("");
     setTextSearch("");
-    location.state=null;
-  }
+    location.state = null;
+  };
 
 
   const levelOptions = [
@@ -80,46 +78,36 @@ const Table = () => {
   ]
 
 
-  const handleLevel = (event) => {
-    setSlectedLevel(event);
-  };
-  const handleSubject = (event) => {
-    setSlectedSubject(event);
-  };
-  const handleTopic = (event) => {
-    setSlectedTopic(event);
-  };
+  const handleLevel = (event) => setSelectedLevel(event);
+  const handleSubject = (event) => setSelectedSubject(event);
+  const handleTopic = (event) => setSelectedTopic(event);
 
   const fetchData = async (tags) => {
     try {
       const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblem?page_no=${currentPage}&probPerPage=${probPerPage}&tags=${tags}`);
-      // setData(response.data.data);
+      // const response = await axios.get(`http://localhost:8000/api/v1/getProblem?page_no=${currentPage}&probPerPage=${probPerPage}&tags=${tags}`);
       setFilteredData(response.data.data);
       setTotalProb(response.data.length);
-      // console.log(response.data.length);
     } catch (error) {
       console.error(error);
     }
   };
   
 
-  const handleText = (e) => {
-    setText(e.target.value);
-  }
+  const handleText = (e) => setText(e.target.value);
 
-  const handleTextSubmit = (e) =>{
+  const handleTextSubmit = (e) => {
     e.preventDefault();
     setTextSearch(text);
     setCurrentPage(1);
-    set_tags("");
-    location.state=null;
-  }
+    setTags("");
+    location.state = null;
+  };
 
   const handleTextSearch = async (e) => {
     try {
-      // console.log(text);
-      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
-      // setData(response.data.data);
+      // const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
+      const response = await axios.get(`http://localhost:8000/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
       setFilteredData(response.data.data);
       setTotalProb(response.data.length);
     } catch (err) {
@@ -127,47 +115,65 @@ const Table = () => {
     }
   }
 
-  useEffect(() => {
-    if(location.state != null){
-      const {subject} = location.state;
-      fetchData(subject);
+  const resolveStatus = async () => {
+    try {
+      const storedData = JSON.parse(Cookies.get('userData'));
+      setUserData(storedData);
+      const res = await axios.get(`http://localhost:8000/api/v1/getSolvedProblem?userId=${storedData._id}`);
+      setArr(res.data.data);
+    } catch (error) {
+      console.error(error);
     }
-    else if(textSearch !== ""){
-      handleTextSearch();
+  };
+
+  useEffect(() => {
+    const storedData = Cookies.get('userData');
+    if (storedData) {
+      setIsAuthenticate(true);
+      resolveStatus();
     }
     else{
+      setIsAuthenticate(false);
+      setArr([]);
+    }
+    if (location.state != null) {
+      const { subject } = location.state;
+      fetchData(subject);
+    } else if (textSearch !== "") {
+      handleTextSearch();
+    } else {
       fetchData(all_tags);
     }
-  }, [all_tags,textSearch,probPerPage,currentPage]);
+  }, [all_tags, textSearch, probPerPage, currentPage, isAuthenticate]);
 
-  const handlePath = (item) =>{
-    if(isAuthenticate){
-      const path = "/Problem/"+item.statement;
-      navigate(path, {state:{item}});
+  const handlePath = (item) => {
+    if (isAuthenticate) {
+      const path = "/Problem/" + item.statement;
+      navigate(path, { state: { item } });
+    } else {
+      navigate("/login", { state: { returnPath: "/practice" } });
     }
-    else {
-      navigate("/login", {state: {returnPath:"/practice"}});
-    }
-  }
+  };
+
 
   return (
     <div className="page-container">
       <div className="header-container">
-        <div className="header-item" onClick={() => {setTextSearch(""); set_tags("mathematics") }}>
+        <div className="header-item" onClick={() => { setTextSearch(""); setTags("mathematics") }}>
           <img className="header-image" src={require('../assets/mathematics_icon.png')} alt="Math Icon" />
           <div className="header-text">
             <h2>Mathematics</h2>
             <p>Solve most asked question of mathematics</p>
           </div>
         </div>
-        <div className="header-item" onClick={() => {setTextSearch(""); set_tags("physics") }}>
+        <div className="header-item" onClick={() => {setTextSearch(""); setTags("physics") }}>
           <img className="header-image" src={require('../assets/physics_icon.png')} alt="Physics Icon" />
           <div className="header-text">
             <h2>Physics</h2>
             <p>Solve most asked question of physics</p>
           </div>
         </div>
-        <div className="header-item" onClick={() => {setTextSearch(""); set_tags("chemistry") }}>
+        <div className="header-item" onClick={() => {setTextSearch(""); setTags("chemistry") }}>
           <img className="header-image" src={require('../assets/chemistry_icon.png')} alt="Chemistry Icon" />
           <div className="header-text">
             <h2>Chemistry</h2>
@@ -249,7 +255,7 @@ const Table = () => {
                 </td>
 
                 <td className="styled-td">{item.tags[0]}</td>
-                <td className="styled-td">{item.status}</td>
+                <td className="styled-td">{arr.indexOf(item._id) !== -1 ? ("Solved") : ("Todo")}</td>
                 <td className="styled-td">{item.solution ? item.solution : <p>--</p>}</td>
               </tr>
             ))}
