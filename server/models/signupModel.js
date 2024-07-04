@@ -1,20 +1,9 @@
 const mongoose = require("mongoose");
 
 const signupSchema = mongoose.Schema({
-  first:{
+  name:{
     type:String,
-    required:true,
-    trim:true
-  },
-  last:{
-    type:String,
-    required:true,
-    trim:true
-  },
-  username:{
-    type:String,
-    required:true,
-    trim:true
+    required: true
   },
   email:{
     type:String,
@@ -30,6 +19,31 @@ const signupSchema = mongoose.Schema({
   },
   token:{
     type:String,
+  },
+  markedQuestion:{
+    type:Array
+  },
+  solvedQuestion:{
+    type:Array
+  },
+  tagsSolved:{
+    type:Array
+  },
+  friends:{
+    type:Array
+  },
+  friendCount:{
+    type: Number,
+    default: 0
+  },
+  school:{
+    type: String
+  },
+  DOB:{
+    type: String
+  },
+  Rating:{
+    type: String
   }
 })
 
