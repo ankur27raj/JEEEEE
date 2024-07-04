@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
-// import './ProfileDropdown.css'; // Import your CSS file
-
-
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const ProfileContainer = styled.div`
@@ -15,14 +13,19 @@ const ProfilePicture = styled.img`
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
+    transition: transform 0.3s ease;
+    &:hover {
+        transform: scale(1.1);
+    }
 `;
 
 const DropdownMenu = styled.div`
     position: absolute;
-    top: 50px; /* Adjust as needed */
+    top: 50px;
     right: 0;
-    width: 150px; /* Adjust as needed */
-    background-color: white;
+    width: 10rem;
+    font-weight:bold;
+    background-color: rgba(132, 188, 212, 0.689);
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
@@ -31,28 +34,48 @@ const DropdownMenu = styled.div`
     display: ${({ visible }) => (visible ? 'block' : 'none')};
 `;
 
-const DropdownItem = styled.a`
-    display: block;
+const DropdownItem = styled(Link)`
+    display: flex;
+    align-items: center;
     padding: 0.7rem;
     text-decoration: none;
     color: black;
-    cursor : arrow;
-    &:first-child{
-        font-weight:bolder;
-        font-size:1.3rem;
-        padding-bottom: 0;
-    }
-    &:nth-child(2){
+    
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:first-child {
+        font-weight: bolder;
+        font-size: 1.3rem;
+        padding-bottom: 0.7rem;
         border-bottom: 1px solid #ccc;
-        padding-top: 1px;
-    }
-    &:last-child {
-        cursor:pointer;
     }
 
     &:hover {
-        background-color: #f1f1f1;
+        background-color: rgba(149, 180, 182, 0.322);
+        color: black;
     }
+
+    &:last-child {
+        cursor: pointer;
+    }
+`;
+
+const DropdownItemDiv = styled.div`
+    display: flex;
+    align-items: center;
+    padding: 0.7rem;
+    color: black;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(149, 180, 182, 0.322);
+        color: black;
+    }
+`;
+
+const ProfileName = styled.span`
+    margin-left: 10px;
 `;
 
 const ProfileDropdown = () => {
@@ -60,12 +83,10 @@ const ProfileDropdown = () => {
     const profileRef = useRef(null);
     const dropdownRef = useRef(null);
 
-    // Function to toggle dropdown visibility
     const toggleDropdown = () => {
         setDropdownVisible((prevState) => !prevState);
     };
 
-    // Function to close the dropdown if clicked outside of it
     const handleClickOutside = (event) => {
         if (
             profileRef.current &&
@@ -77,7 +98,6 @@ const ProfileDropdown = () => {
         }
     };
 
-    // Add event listener for clicks outside of the dropdown
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
@@ -85,28 +105,45 @@ const ProfileDropdown = () => {
         };
     }, []);
 
-    // Function to handle sign out action
+    const { userData, remove_Data_from_cookies } = useContext(UserContext);
 
-    const {userData, remove_Data_from_cookies} = useContext(UserContext);
+    const profile = userData.name + "-" + userData._id;
+
+    const navigate = useNavigate();
     const handleSignOut = () => {
         remove_Data_from_cookies();
+        navigate("/");
     };
+
+    const handleLinkClick = () => {
+        setDropdownVisible(false);
+    };
+
     return (
         <ProfileContainer ref={profileRef}>
-            {/* Profile picture */}
             <ProfilePicture
-                src={require("../../assets/profile_img.png")} // Change this to your profile picture URL
+                src={require("../../assets/profile_img.png")}
                 alt="Profile Picture"
                 onClick={toggleDropdown}
             />
-            {/* <p onClick={toggleDropdown}>{userData.first} {" "} {userData.last}</p> */}
-            {/* Dropdown menu */}
             <DropdownMenu visible={isDropdownVisible} ref={dropdownRef}>
-                <DropdownItem>{userData.username}</DropdownItem>
-                <DropdownItem>{userData.first} {" "} {userData.last}</DropdownItem>
-                <DropdownItem onClick={handleSignOut}>
-                    Sign Out
+                <DropdownItem to={`/user/${profile}`} onClick={handleLinkClick}>
+                    <ProfilePicture
+                        src={require("../../assets/profile_img.png")}
+                        alt="Profile Picture"
+                        style={{ width: '30px', height: '30px', marginRight: '10px' }}
+                    />
+                    <ProfileName>{userData.name}</ProfileName>
                 </DropdownItem>
+                <DropdownItem to="/myList" state={{ text: "getList" }} onClick={handleLinkClick}>
+                    My List
+                </DropdownItem>
+                <DropdownItem to="/submissions" state={{ text: "getSubmissions" }} onClick={handleLinkClick}>
+                    Submissions
+                </DropdownItem>
+                <DropdownItemDiv onClick={handleSignOut}>
+                    Sign Out
+                </DropdownItemDiv>
             </DropdownMenu>
         </ProfileContainer>
     );
