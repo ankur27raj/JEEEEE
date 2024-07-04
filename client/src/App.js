@@ -16,6 +16,10 @@ import {useContext} from 'react'
 import {ModeContext} from './contexts/ModeContext';
 import FeedbackPage from "./components/FeedBack";
 import PaymentSuccess from "./PaymentSuccess";
+import ProblemList from "./components/profile/ProblemList";
+import UserProfile from "./components/profile/UserProfile";
+import Friends from "./components/profile/Friends";
+import Settings from "./components/profile/Settings";
 
 function App() {
   const { darkMode } = useContext(ModeContext);
@@ -65,6 +69,26 @@ function App() {
               <Route
                 path="/paymentsuccess"
                 Component={PaymentSuccess}>
+              </Route>
+              <Route
+                path="/myList"
+                Component={ProblemList}>
+              </Route>
+              <Route
+                path="/submissions"
+                Component={ProblemList}>
+              </Route>
+              <Route
+                path="/user/:profile"
+                Component = {UserProfile}>
+              </Route>
+              <Route
+                path="/friends"
+                Component = {Friends}>
+              </Route>
+              <Route
+                path="/settings"
+                Component = {Settings}>
               </Route>
           </Routes>
           
