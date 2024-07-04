@@ -107,7 +107,7 @@ const Table = () => {
   const handleTextSearch = async (e) => {
     try {
       // const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
-      const response = await axios.get(`http://localhost:8000/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
+      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getProblemByText?text=${text}&page_no=${currentPage}&probPerPage=${probPerPage}`);
       setFilteredData(response.data.data);
       setTotalProb(response.data.length);
     } catch (err) {
@@ -119,7 +119,7 @@ const Table = () => {
     try {
       const storedData = JSON.parse(Cookies.get('userData'));
       setUserData(storedData);
-      const res = await axios.get(`http://localhost:8000/api/v1/getSolvedProblem?userId=${storedData._id}`);
+      const res = await axios.get(`https://je-2-backend.onrender.com/api/v1/getSolvedProblem?userId=${storedData._id}`);
       setArr(res.data.data);
     } catch (error) {
       console.error(error);
