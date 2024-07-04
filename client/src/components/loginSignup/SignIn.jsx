@@ -38,13 +38,13 @@ function SignInForm() {
           }
       );
       if(response.data.success === true) {
-          setIsAuthenticate(true);
-          const data = response.data.user;
-          set_Data_to_cookies({email:data.email, first:data.first, last:data.last, username:data.username, token:data.token});
-          if(location.state != null){
-              navigate(location.state.returnPath);
-          }
-          else navigate('/');
+        setIsAuthenticate(true);
+        const data = response.data.user;
+        set_Data_to_cookies(data);
+        if(location.state != null){
+            navigate(location.state.returnPath);
+        }
+        else navigate('/');
       }else{
           setErrorMessage(response.data.message || 'An unknown error occurred.');
       }
