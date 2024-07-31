@@ -36,7 +36,9 @@ const Question = () => {
 
   const checkMarked = async () =>{
     try{
-      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getMarkedProblem?userId=${userData._id}&problemId=${item._id}`);
+      const storedData = JSON.parse(Cookies.get('userData'));
+      const userId = storedData._id;
+      const response = await axios.get(`https://je-2-backend.onrender.com/api/v1/getMarkedProblem?userId=${userId}&problemId=${item._id}`);
       setMark(response.data.data);
     }catch(err){
       console.error(err);
