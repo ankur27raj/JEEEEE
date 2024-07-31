@@ -59,7 +59,7 @@ function App() {
                   Component={QuestionPage}
                   ></Route>
               <Route 
-                path="/problem/:statement/"
+                path="/Problem/:statement/"
                 Component={Question}>
               </Route>
               <Route 
